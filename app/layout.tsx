@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Aoi Saki",
   description: "話そうか",
   icons: {
-    icon: '/favicon.ico', // Path ke ikon Anda di folder public
+    icon: '/logo.png', // Path ke ikon Anda di folder public
   },
 };
 
