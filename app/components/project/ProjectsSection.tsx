@@ -75,23 +75,7 @@ async function YouTubeSection() {
 
     return (
         <div className="mb-24">
-            <h3 className="text-3xl font-bold text-gray-700 flex items-center gap-3 mb-8"><FaYoutube /> Latest YouTube Videos</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {ytVideos.length > 0 ? ytVideos.map((video: any) => (
-                    <a key={video.id} href={video.url} target="_blank" rel="noopener noreferrer" className="group block bg-gray-50 rounded-lg border border-gray-200 hover:border-red-500 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 overflow-hidden">
-                        <div className="relative">
-                            <Image src={video.thumbnail} alt={`Thumbnail for ${video.title}`} width={480} height={360} className="w-full object-cover"/>
-                            <div className="absolute inset-0 bg-black bg-opacity-20 group-hover:bg-opacity-50 flex items-center justify-center transition-all duration-300">
-                                <FaPlay className="text-white text-5xl opacity-80 group-hover:opacity-100 scale-100 group-hover:scale-125 transition-transform duration-300"/>
-                            </div>
-                        </div>
-                        <div className="p-4">
-                            <h4 className="font-bold text-lg text-red-600 group-hover:text-red-700 truncate">{video.title}</h4>
-                        </div>
-                    </a>
-                )) : <p>Could not load YouTube videos at the moment.</p>}
-            </div>
-        </div>
+       
     );
 }
 
