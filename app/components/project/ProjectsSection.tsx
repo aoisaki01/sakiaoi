@@ -1,47 +1,43 @@
 /*
 ======================================================================
- FILE: app/components/ProjectsSection.tsx (Client Component)
+ FILE 2: app/components/project/ProjectsSection.tsx (PERBARUI FILE INI)
 ======================================================================
-Diubah menjadi Client Component untuk mengelola state tombol "Load More"
-dan ditambahkan animasi scroll-triggered.
+Komponen ini sekarang meminta data ke API route lokal Anda, bukan
+langsung ke GitHub.
 */
 'use client';
 
 import { useState, useEffect } from 'react';
 import Image from "next/image";
-import Link from 'next/link';
 import { FaGithub, FaStar, FaCodeBranch } from "react-icons/fa";
 import { useInView } from 'react-intersection-observer';
 
-const GITHUB_USERNAME = "aoisaki01";
 const REPOS_PER_PAGE = 6;
 
-// --- Komponen Utama untuk Section Projects ---
 export default function ProjectsSection() {
   const [repos, setRepos] = useState<any[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  // Hook untuk mendeteksi visibilitas komponen
   const { ref, inView } = useInView({
-    threshold: 0.1,      // Memicu saat 10% komponen terlihat
-    triggerOnce: false,  // Memicu animasi setiap kali masuk/keluar layar
+    threshold: 0.1,
+    triggerOnce: false,
   });
 
-  // Fungsi untuk mengambil data repositori dari GitHub
   const fetchRepos = async (currentPage: number) => {
     setLoading(true);
     try {
-      const res = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?sort=pushed&per_page=${REPOS_PER_PAGE}&page=${currentPage}`);
+      // PERUBAHAN: URL fetch sekarang mengarah ke API route lokal
+      const res = await fetch(`/api/github?page=${currentPage}`);
+      
       if (res.ok) {
         const newRepos = await res.json();
         if (newRepos.length < REPOS_PER_PAGE) {
           setHasMore(false);
         }
-        // Menambahkan repo baru ke state yang ada
-        setRepos((prevRepos: any[]) => {
-            const existingIds = new Set(prevRepos.map((r: any) => r.id));
+        setRepos(prevRepos => {
+            const existingIds = new Set(prevRepos.map(r => r.id));
             const uniqueNewRepos = newRepos.filter((r: any) => !existingIds.has(r.id));
             return [...prevRepos, ...uniqueNewRepos];
         });
@@ -55,10 +51,9 @@ export default function ProjectsSection() {
     setLoading(false);
   };
 
-  // Mengambil data awal saat komponen pertama kali dimuat
   useEffect(() => {
     fetchRepos(1);
-  }, []); // Hanya berjalan sekali
+  }, []);
 
   const handleLoadMore = () => {
     const nextPage = page + 1;
