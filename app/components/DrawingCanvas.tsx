@@ -160,8 +160,8 @@ export default function DrawingCanvas() {
       <div 
         className={`fixed z-50 transition-all duration-700 ease-in-out
           // Positioning
-          
-          md:bottom-5 md:left-1/2 md:top-auto md:-translate-x-1/2 md:-translate-y-0
+          right-0 top-0 -translate-y-0
+          md:bottom-5 md:left-0 md:top-auto md:-translate-x-0 md:-translate-y-0
           
           // Animation Logic
           ${hasMounted
