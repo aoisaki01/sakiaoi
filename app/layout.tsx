@@ -3,6 +3,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { PageTransitionProvider } from "./components/PageTransitionProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -10,7 +11,7 @@ export const metadata: Metadata = {
   title: "Aoi Saki",
   description: "話そう、私のプロジェクトとポートフォリオを見てください。",
   icons: {
-    icon: '/logo.ico', // Path ke ikon Anda di folder public
+    icon: '/logo.ico', 
   },
 };
 
@@ -21,7 +22,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>{children}</body>
+      <body>
+        <PageTransitionProvider>
+          {children}
+        </PageTransitionProvider>
+      </body>
     </html>
   );
 }
