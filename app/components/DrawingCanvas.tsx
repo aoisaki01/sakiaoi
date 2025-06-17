@@ -3,7 +3,8 @@
  FILE 1: app/components/DrawingCanvas.tsx (Komponen yang Diperbarui)
 ======================================================================
 Komponen ini berisi semua logika untuk kanvas gambar,
-dengan tambahan fitur kunci scroll, hide/show, dan mode gambar.
+dengan tambahan fitur kunci scroll, hide/show, mode gambar,
+dan animasi slide-in saat refresh.
 */
 'use client';
 
@@ -42,8 +43,10 @@ export default function DrawingCanvas() {
   const [color, setColor] = useState('#ef4444'); // Default warna merah
   const [isScrollLocked, setIsScrollLocked] = useState(false);
   const [isPaletteVisible, setIsPaletteVisible] = useState(true);
-  // State untuk mengelola mode gambar
   const [isDrawingMode, setIsDrawingMode] = useState(true);
+  // State baru untuk animasi saat refresh
+  const [hasMounted, setHasMounted] = useState(false);
+
 
   // Fungsi untuk mengatur ukuran kanvas
   const setCanvasSize = () => {
@@ -63,6 +66,11 @@ export default function DrawingCanvas() {
   }, [isScrollLocked]);
 
   useEffect(() => {
+    // Efek ini berjalan sekali saat komponen dimuat
+    const mountTimer = setTimeout(() => {
+        setHasMounted(true);
+    }, 100); // Delay kecil untuk memastikan transisi berjalan
+
     const timeoutId = setTimeout(setCanvasSize, 100);
     window.addEventListener('resize', setCanvasSize);
     const resizeObserver = new ResizeObserver(setCanvasSize);
@@ -70,6 +78,7 @@ export default function DrawingCanvas() {
         resizeObserver.observe(document.body);
     }
     return () => {
+      clearTimeout(mountTimer);
       clearTimeout(timeoutId);
       window.removeEventListener('resize', setCanvasSize);
       resizeObserver.disconnect();
@@ -149,14 +158,16 @@ export default function DrawingCanvas() {
       />
       {/* Wrapper untuk Palet dan Tombol Hide/Show */}
       <div 
-        className={`fixed z-50 transition-transform duration-500 ease-in-out
-          // Tata Letak Mobile (default)
-          right-2 top-1/2 -translate-y-1/2 
-          ${isPaletteVisible ? 'translate-x-0' : 'translate-x-[calc(100%+0.5rem)]'}
-
-          // Tata Letak Desktop
+        className={`fixed z-50 transition-all duration-700 ease-in-out
+          // Positioning
+          
           md:bottom-5 md:left-1/2 md:top-auto md:-translate-x-1/2 md:-translate-y-0
-          ${isPaletteVisible ? 'md:translate-y-0' : 'md:translate-y-[calc(100%+1.25rem)]'}
+          
+          // Animation Logic
+          ${hasMounted
+            ? (isPaletteVisible ? 'opacity-100 translate-x-0 md:translate-y-0' : 'opacity-100 translate-x-[calc(100%+0.5rem)] md:translate-y-[calc(100%+1.25rem)]')
+            : 'opacity-0 translate-x-full md:translate-y-full'
+          }
         `}
       >
         {/* Tombol Hide/Show */}
@@ -181,7 +192,7 @@ export default function DrawingCanvas() {
         </button>
 
         {/* Konten Palet */}
-        <div className="flex items-center justify-center gap-3 p-3 rounded-2xl shadow-lg bg-white/30 backdrop-blur-sm border border-white/20 md:flex-row flex-col">
+        <div className="flex items-center justify-center gap-3 p-3 rounded-2xl w-fit shadow-lg bg-white/30 backdrop-blur-sm border border-white/20 md:flex-row flex-col">
           {/* Tombol Mode Gambar */}
           <button
             onClick={() => setIsDrawingMode(!isDrawingMode)}
