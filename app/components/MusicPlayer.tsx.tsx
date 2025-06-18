@@ -222,11 +222,11 @@ export default function MusicPlayer({ playlist }: MusicPlayerProps) {
                 input[type=range].custom-slider::-moz-range-thumb { width: 15px; height: 15px; background: #1f2937; cursor: pointer; border-radius: 50%; box-shadow: 0 0 5px rgba(0,0,0,0.3); }
             `}</style>
             
-            <div className={`fixed top-0 left-1/2 -translate-x-1/2 z-50 transition-transform duration-500 ease-in-out ${isVisible ? 'translate-y-4' : '-translate-y-[calc(100%+20px)]'}`}>
-                <div style={{ transform: `scale(${playerScale})`, transition: 'transform 0.08s ease-out' }}>
+            <div className={`fixed top-0 left-1/2 -translate-x-1/2 z-50 w-fit transition-transform duration-500 ease-in-out ${isVisible ? 'translate-y-4' : '-translate-y-[calc(100%+20px)]'}`}>
+                <div style={{ transform: `scale(${playerScale})`, transition: 'w-fit transform 0.08s ease-out' }}>
                     <div className={`w-[350px] md:w-[400px] p-4 bg-white/70 backdrop-blur-xl rounded-2xl shadow-2xl border transition-all duration-300 ${isStrongBeat ? 'border-pink-500/80 shadow-pink-500/40' : 'border-black/10'}`}>
-                        <div className="flex items-center gap-4 text-slate-800">
-                           <button onClick={() => setIsVisible(!isVisible)} className="absolute top-[calc(100%+0.5rem)] left-1/2 -translate-x-1/2 bg-slate-900/50 backdrop-blur-sm rounded-full p-2 text-white" title={isVisible ? "Sembunyikan Player" : "Tampilkan Player"}>
+                        <div className="flex w-fit items-center gap-4 text-slate-800">
+                           <button onClick={() => setIsVisible(!isVisible)} className="absolute w-fit top-[calc(100%+0.5rem)] left-1/2 -translate-x-1/2 bg-slate-900/50 backdrop-blur-sm rounded-full p-2 text-white" title={isVisible ? "Sembunyikan Player" : "Tampilkan Player"}>
                                 {isVisible ? <ChevronDownIcon /> : <MusicIcon />}
                             </button>
                             <div className="flex-shrink-0">
